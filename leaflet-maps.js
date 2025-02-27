@@ -1,12 +1,22 @@
 let leafletMap = null;
 
 function displayStickyMap(lat, long, zoom) {
+  /* DEBUGGING
+  console.log("Displaying map:", { lat, long, zoom });
+  const container = document.getElementById("sticky-map-container");
+  console.log("Container dimensions:", {
+    width: container.clientWidth,
+    height: container.clientHeight,
+    display: window.getComputedStyle(container).display,
+  });
+  */
+
   if (!leafletMap) {
     createStickyMap(lat, long, zoom);
   } else {
     moveStickyMapLocation(lat, long, zoom);
   }
-  leafletMap.invalidateSize();
+  // leafletMap.invalidateSize();
 }
 
 function moveStickyMapLocation(lat, long, zoom) {
@@ -19,13 +29,18 @@ function moveStickyMapLocation(lat, long, zoom) {
 }
 
 function createStickyMap(lat, long, zoom) {
-  leafletMap = L.map("sticky-map-container").setView([lat, long], zoom);
-  let tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  leafletMap = L.map("sticky-map-container", {
+    center: [lat, long],
+    zoom: zoom,
+    zoomControl: true,
+  });
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
   }).addTo(leafletMap);
 
   leafletMap.scrollWheelZoom.disable();
+
   handleResizeEvents();
 }
 

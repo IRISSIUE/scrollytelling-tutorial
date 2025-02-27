@@ -45,6 +45,61 @@
         <p id="subtitle"></p>
       </section>
 
+      <!-- The 'content-section' is just here for reference/example, as it will be entirely replaced 
+          by JavaScript generated code containing the content from a data source.
+
+          Multiple scrolly-container divs are necessary because a content-type of "text" can't be
+          within a scrolly container, as it uses up the entire horizontal width and does not have
+          any sticky content. It will just scroll normally. 
+
+          When we encounter a "text" content type, we need to close the current scrolly-container
+          and create a text div. If there's more scrolly content after the text step, 
+          then we'll create another scrolly-container after that (and repeat as necessary)
+    -->
+
+      <section id="content-section">
+        <!-- Below is the first scrolly-container, which will be replaced by JavaScript -->
+        <div
+          class="scrolly-container"
+          data-sticky-container-id="sticky-container-1"
+        >
+          <article>
+            <div
+              class="step"
+              data-step="1"
+              data-content-type="image"
+              data-file-path="path"
+              data-alt-text="Alt Image Text"
+              data-zoom-level="1"
+            >
+              <p class="step-content">Example Image Step</p>
+            </div>
+
+            <div
+              class="step"
+              data-step="2"
+              data-content-type="map"
+              data-alt-text="Alt Map Text"
+              data-latitude="38.794"
+              data-longitude="-89.9979"
+              data-zoom-level="12"
+            >
+              <p class="step-content">Example Map Step</p>
+            </div>
+          </article>
+
+          <!-- Each kind of sticky thing has it's own container to show/hide when it is part of a step-->
+          <div id="sticky-container-1">
+            <div class="sticky-content" id="sticky-image-container">
+              <img id="the-sticky-image" />
+            </div>
+            <div class="sticky-content" id="sticky-map-container"></div>
+            <div class="sticky-content" id="sticky-video-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- The error dialog is only displayed when there is an error-->
       <div id="error-container">
         <div id="error-dialog">
           <p id="error-header">Dang.</p>
@@ -55,17 +110,6 @@
           <p id="error-hint"></p>
         </div>
       </div>
-
-      <section id="scrolly-container">
-        <article></article>
-
-        <!-- Each kind of sticky thing has it's own container to show/hide when it is part of a step-->
-        <div class="sticky-content" id="sticky-image-container">
-          <img id="the-sticky-image" />
-        </div>
-        <div class="sticky-content" id="sticky-map-container"></div>
-        <div class="sticky-content" id="sticky-video-container"></div>
-      </section>
 
       <section id="outro">
         <p id="end-text"></p>

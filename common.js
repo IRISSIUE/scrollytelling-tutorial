@@ -32,9 +32,9 @@ export class StoryData {
   validate(actionTextIfError) {
     if (
       doesValueExist(this.textHorizontalPercentage) &&
-      (!isNumber(this.textHorizontalPercentage) ||
-        (this.textHorizontalPercentage > 99 &&
-          this.textHorizontalPercentage < 1))
+      isNumber(this.textHorizontalPercentage) &&
+      this.textHorizontalPercentage > 99 &&
+      this.textHorizontalPercentage < 1
     ) {
       throw new ScrollyError(
         actionTextIfError,
@@ -45,11 +45,11 @@ export class StoryData {
   }
 }
 
-function isNumber(value) {
-  return !isNaN(value);
+export function isNumber(value) {
+  return isNaN(value);
 }
 
-function doesValueExist(value) {
+export function doesValueExist(value) {
   return value != null && value != "";
 }
 
@@ -77,7 +77,7 @@ export class StepData {
   }
 
   validate(actionTextIfError) {
-    const validContentTypes = ["image", "map", "video"];
+    const validContentTypes = ["image", "map", "video", "text"];
     if (!validContentTypes.includes(this.contentType)) {
       throw new ScrollyError(
         actionTextIfError,

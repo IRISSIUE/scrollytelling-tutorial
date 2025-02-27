@@ -5,11 +5,11 @@ import { validateStepDataArray } from "./common.js";
 import { fetchAllDataFromGoogleSheet } from "./google-sheet.js";
 
 let main = null;
-let scrolly = null;
+let contentSection = null;
+let scrollyStory = null;
 let stickyImageContainer = null;
 let stickyMapContainer = null;
 let stickyVideoContainer = null;
-let story = null;
 let steps = null;
 let prevStepData = null;
 
@@ -20,11 +20,8 @@ let scroller = scrollama();
 
 document.addEventListener("DOMContentLoaded", async function () {
   main = document.querySelector("main");
-  scrolly = main.querySelector("#scrolly-container");
-  stickyImageContainer = scrolly.querySelector("#sticky-image-container");
-  stickyMapContainer = scrolly.querySelector("#sticky-map-container");
-  stickyVideoContainer = scrolly.querySelector("#sticky-video-container");
-  story = scrolly.querySelector("article");
+  contentSection = document.querySelector("#content-section");
+  scrollyStory = main.querySelector(".scrolly-container");
 
   //createScrollyContentFromCSVFile();
   try {
@@ -40,11 +37,21 @@ document.addEventListener("DOMContentLoaded", async function () {
   } catch (scrollyError) {
     displayThenThrowError(scrollyError);
   }
+
+  // initialize scrollama only after the scrolly content has been created
+  initScrollama();
 });
 
 function createAllScrollyContentInHTML(allScrollyData) {
   createStoryContentInHtml(allScrollyData.storyData);
   createStepsContentInHtml(allScrollyData.stepData);
+
+  // horizontalPercentage has to be set after Steps are created
+  // because that's when the sticky containers (that get their
+  // width set) are created
+  setHorizontalWidthOfTextAndStickyContent(
+    allScrollyData.storyData.textHorizontalPercentage
+  );
 }
 
 function createStoryContentInHtml(storyData) {
@@ -59,8 +66,6 @@ function createStoryContentInHtml(storyData) {
 
   const endText = document.getElementById("end-text");
   endText.innerHTML = storyData.endText;
-
-  setHorizontalWidthOfTextAndStickyContent(storyData.textHorizontalPercentage);
 }
 
 function setHorizontalWidthOfTextAndStickyContent(horizontalPercentage) {
@@ -83,10 +88,14 @@ function setHorizontalWidthOfTextAndStickyContent(horizontalPercentage) {
 */
 function createStepsContentInHtml(stepDataArray) {
   var stepNumber = 1;
+  var scrollContainerCount = 1;
+  let scrollyContainer = createScrollyContainer(scrollContainerCount);
+  let storySteps = document.createElement("article");
+
   stepDataArray.forEach((stepData) => {
     var stepElement = document.createElement("div");
     stepElement.classList.add("step");
-    // dataset is the scrollama element that maps to HTML
+    // dataset contains the scrollama custom elements that map to HTML
     // so updating dataset updates the HTML attributes
     stepElement.dataset.step = stepNumber;
     stepElement.dataset.contentType = stepData.contentType;
@@ -107,19 +116,49 @@ function createStepsContentInHtml(stepDataArray) {
     }
 
     stepElement.innerHTML = `<p class="step-content">${stepData.text}</p>`;
-    story.appendChild(stepElement);
+    storySteps.appendChild(stepElement);
     stepNumber++;
   });
 
-  // re-query the steps after creating them from CSV data
-  steps = story.querySelectorAll(".step");
+  scrollyContainer.appendChild(storySteps);
+  scrollyContainer.appendChild(createStickyContainers(scrollContainerCount));
+  contentSection.replaceChildren(scrollyContainer);
 
-  // initialize scrollama only after the scrolly content has been created
-  initScrollama();
+  // re-query the steps after creating them from data
+  steps = scrollyContainer.querySelectorAll(".step");
 }
 
-function isParseError(parseErrors, papaErrors) {
-  return false;
+function createScrollyContainer(scrollyContainerCount) {
+  let scrollyContainer = document.createElement("div");
+  scrollyContainer.classList.add("scrolly-container");
+  scrollyContainer.dataset.stickyContainerId =
+    "sticky-container-" + scrollyContainerCount;
+  return scrollyContainer;
+}
+
+function createStickyContainers(scrollyContainerCount) {
+  let stickyContainer = document.createElement("div");
+  stickyContainer.id = "sticky-container-" + scrollyContainerCount;
+  stickyContainer.classList.add("sticky-content");
+
+  let imageContainer = document.createElement("div");
+  //imageContainer.classList.add("sticky-content");
+  imageContainer.id = "sticky-image-container";
+  imageContainer.innerHTML = `<img id="the-sticky-image" />`;
+
+  let mapContainer = document.createElement("div");
+  //mapContainer.classList.add("sticky-content");
+  mapContainer.id = "sticky-map-container";
+
+  let videoContainer = document.createElement("div");
+  //videoContainer.classList.add("sticky-content");
+  videoContainer.id = "sticky-video-container";
+
+  stickyContainer.appendChild(imageContainer);
+  stickyContainer.appendChild(mapContainer);
+  stickyContainer.appendChild(videoContainer);
+
+  return stickyContainer;
 }
 
 function displayThenThrowError(stepError) {
@@ -153,6 +192,7 @@ function handleStepEnter(response) {
   // Set active step state to is-active and all othe steps not active
   steps.forEach((step) => step.classList.remove("is-active"));
   el.classList.add("is-active");
+  console.log("Step " + el.dataset.step + " entered");
 
   replaceStepStickyContent(el.dataset);
 }
@@ -161,12 +201,15 @@ function handleStepEnter(response) {
    in HTML based on the step data
 */
 function replaceStepStickyContent(stepData) {
+  stickyImageContainer = document.querySelector("#sticky-image-container");
+  stickyMapContainer = document.querySelector("#sticky-map-container");
+  stickyVideoContainer = document.querySelector("#sticky-video-container");
   // activate the right container if it's different from previous step
   if (
     prevStepData == null ||
     prevStepData.contentType != stepData.contentType
   ) {
-    activateStickyContentContainer(stepData.contentType);
+    transitionToNewStickyContentContainer(stepData.contentType);
   }
 
   // Replace the content in the sticky container
@@ -181,7 +224,7 @@ function replaceStepStickyContent(stepData) {
   prevStepData = stepData;
 }
 
-function activateStickyContentContainer(activateContentType) {
+function transitionToNewStickyContentContainer(activateContentType) {
   // Start fading out the old container (just do all of them).
   // We've set up a transition on opacity, so setting it to 0 or 1 will take
   // as long as specified in CSS. We can fade in the new content after that
@@ -192,28 +235,28 @@ function activateStickyContentContainer(activateContentType) {
   stopPlayingVideo(); // in case video is playing, don't want to hear it after it scrolls off page
 
   // Fade in the new container after the opacity transition
-  if (activateContentType === "image") {
-    setTimeout(() => {
-      stickyImageContainer.style.opacity = 1;
-      stickyImageContainer.style.display = "flex";
-      stickyVideoContainer.style.display = "none";
-      stickyMapContainer.style.display = "none";
-    }, transitionInMilliseconds);
-  } else if (activateContentType === "map") {
-    setTimeout(() => {
-      stickyMapContainer.style.opacity = 1;
-      stickyMapContainer.style.display = "block";
-      stickyImageContainer.style.display = "none";
-      stickyVideoContainer.style.display = "none";
-    }, transitionInMilliseconds);
-  } else if (activateContentType === "video") {
-    setTimeout(() => {
-      stickyVideoContainer.style.opacity = 1;
-      stickyVideoContainer.style.display = "block";
-      stickyImageContainer.style.display = "none";
-      stickyMapContainer.style.display = "none";
-    }, transitionInMilliseconds);
-  }
+  setTimeout(() => {
+    switch (activateContentType) {
+      case "image":
+        stickyImageContainer.style.opacity = 1;
+        stickyImageContainer.style.display = "flex";
+        stickyVideoContainer.style.display = "none";
+        stickyMapContainer.style.display = "none";
+        break;
+      case "map":
+        stickyMapContainer.style.opacity = 1;
+        stickyMapContainer.style.display = "block";
+        stickyImageContainer.style.display = "none";
+        stickyVideoContainer.style.display = "none";
+        break;
+      case "video":
+        stickyVideoContainer.style.opacity = 1;
+        stickyVideoContainer.style.display = "block";
+        stickyImageContainer.style.display = "none";
+        stickyMapContainer.style.display = "none";
+        break;
+    }
+  }, transitionInMilliseconds);
 }
 
 function displayStickyImage(stepData) {
@@ -278,7 +321,7 @@ function addAltTextToMap(altText) {
 function initScrollama() {
   scroller
     .setup({
-      step: "#scrolly-container article .step",
+      step: ".scrolly-container .step",
       offset: 0.5, // what % from the top of the viewport the step should be considered "entered"
       debug: false,
     })
