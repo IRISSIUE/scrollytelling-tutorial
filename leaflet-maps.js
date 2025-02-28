@@ -1,6 +1,7 @@
 let leafletMap = null;
+let leafletMapId = null;
 
-function displayStickyMap(lat, long, zoom) {
+function displayStickyMap(id, lat, long, zoom) {
   /* DEBUGGING
   console.log("Displaying map:", { lat, long, zoom });
   const container = document.getElementById("sticky-map-container");
@@ -10,13 +11,24 @@ function displayStickyMap(lat, long, zoom) {
     display: window.getComputedStyle(container).display,
   });
   */
+  if (id != leafletMapId) {
+    removeCurrentLeafletMap();
+  }
 
   if (!leafletMap) {
-    createStickyMap(lat, long, zoom);
+    leafletMapId = id;
+    createStickyMap(id, lat, long, zoom);
   } else {
     moveStickyMapLocation(lat, long, zoom);
   }
   // leafletMap.invalidateSize();
+}
+
+function removeCurrentLeafletMap() {
+  if (leafletMap) {
+    leafletMap.remove();
+    leafletMap = null;
+  }
 }
 
 function moveStickyMapLocation(lat, long, zoom) {
@@ -28,8 +40,8 @@ function moveStickyMapLocation(lat, long, zoom) {
   leafletMap.flyTo([lat, long], zoom, options);
 }
 
-function createStickyMap(lat, long, zoom) {
-  leafletMap = L.map("sticky-map-container", {
+function createStickyMap(id, lat, long, zoom) {
+  leafletMap = L.map(id, {
     center: [lat, long],
     zoom: zoom,
     zoomControl: true,
@@ -46,7 +58,7 @@ function createStickyMap(lat, long, zoom) {
 
 function handleResizeEvents() {
   // Add event listener to handle display changes
-  const mapContainer = document.getElementById("sticky-map-container");
+  const mapContainer = document.getElementById(leafletMapId);
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === "style") {

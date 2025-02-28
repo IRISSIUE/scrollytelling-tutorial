@@ -27,7 +27,7 @@
   transition: opacity 0.5s linear;
 }
 
-#sticky-image-container {
+.sticky-image-container {
   margin: 0;
 
   /* Center everything inside */
@@ -39,7 +39,7 @@
   width: 100%; /* fill space provided by sticky-content parent */
 }
 
-#sticky-image-container img {
+.sticky-image-container img {
   padding: 0rem;
   object-fit: cover;
   object-position: center;
@@ -47,20 +47,20 @@
   height: 100%;
 }
 
-#sticky-map-container {
+.sticky-map-container {
   display: none; /* hide by default, let meta data decide when to display */
   z-index: 1; /* Ensure map displays above other content */
   height: 100%; /* fill space provided by sticky-content parent */
   width: 100%; /* fill space provided by sticky-content parent */
 }
 
-#sticky-video-container {
+.sticky-video-container {
   width: 100%;
   height: 100%;
 }
 
 /* videos have an iframe inserted inside them so need an extra layer of width/height specification */
-#sticky-video-container * {
+.sticky-video-container * {
   width: 100%;
   height: 100%;
 }

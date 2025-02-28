@@ -4,9 +4,7 @@ import { validateStepDataArray } from "./common.js";
 
 import { fetchAllDataFromGoogleSheet } from "./google-sheet.js";
 
-let main = null;
 let contentSection = null;
-let scrollyStory = null;
 let stickyImageContainer = null;
 let stickyMapContainer = null;
 let stickyVideoContainer = null;
@@ -15,19 +13,15 @@ let prevStepData = null;
 
 const transitionInMilliseconds = 500;
 
-// initialize the scrollama
+// scrollama notifies us when a step is entered/scrolled to
 let scroller = scrollama();
 
 document.addEventListener("DOMContentLoaded", async function () {
-  main = document.querySelector("main");
-  contentSection = document.querySelector("#content-section");
-  scrollyStory = main.querySelector(".scrolly-container");
-
   //createScrollyContentFromCSVFile();
   try {
     const allScrollyData = await fetchAllDataFromGoogleSheet();
     allScrollyData.storyData.validate(
-      "Reading Google Sheet story tab (first sheet)"
+      "Reading Google Sheet story tab (1st sheet)"
     );
     validateStepDataArray(
       allScrollyData.stepData,
@@ -38,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     displayThenThrowError(scrollyError);
   }
 
-  // initialize scrollama only after the scrolly content has been created
+  // initialize scrollama after the scrolly content has been created
   initScrollama();
 });
 
@@ -88,77 +82,112 @@ function setHorizontalWidthOfTextAndStickyContent(horizontalPercentage) {
 */
 function createStepsContentInHtml(stepDataArray) {
   var stepNumber = 1;
-  var scrollContainerCount = 1;
-  let scrollyContainer = createScrollyContainer(scrollContainerCount);
+  var isPrevStepScrolly = false;
   let storySteps = document.createElement("article");
+  contentSection = document.querySelector("#content-section");
+
+  let scrollyContainer = createScrollyContainer();
+
+  contentSection.innerHTML = ""; // Clear out the content section
 
   stepDataArray.forEach((stepData) => {
-    var stepElement = document.createElement("div");
-    stepElement.classList.add("step");
-    // dataset contains the scrollama custom elements that map to HTML
-    // so updating dataset updates the HTML attributes
-    stepElement.dataset.step = stepNumber;
-    stepElement.dataset.contentType = stepData.contentType;
-    if (stepData.filePath) {
-      stepElement.dataset.filePath = stepData.filePath;
-    }
-    if (stepData.altText) {
-      stepElement.dataset.altText = stepData.altText;
-    }
-    if (stepData.latitude) {
-      stepElement.dataset.latitude = stepData.latitude;
-    }
-    if (stepData.longitude) {
-      stepElement.dataset.longitude = stepData.longitude;
-    }
-    if (stepData.zoomLevel) {
-      stepElement.dataset.zoomLevel = stepData.zoomLevel;
-    }
+    if (stepData.contentType === "text") {
+      // Text steps are not scrolly, so we have to close our scrolly container
+      // and start a new section
+      if (isPrevStepScrolly) {
+        closeScrollyContainer(scrollyContainer, storySteps);
+      }
+      // create and add a text container
+      contentSection.appendChild(createTextContainer(stepData, stepNumber));
+      // start a new scrolly container for subsequent steps
+      scrollyContainer = createScrollyContainer();
+      storySteps = document.createElement("article");
+      isPrevStepScrolly = false;
+    } else {
+      // Create next step in the scrolly story
+      var stepElement = document.createElement("div");
+      stepElement.classList.add("step");
+      stepElement.dataset.step = stepNumber;
+      stepElement.dataset.contentType = stepData.contentType;
+      if (stepData.filePath) {
+        stepElement.dataset.filePath = stepData.filePath;
+      }
+      if (stepData.altText) {
+        stepElement.dataset.altText = stepData.altText;
+      }
+      if (stepData.latitude) {
+        stepElement.dataset.latitude = stepData.latitude;
+      }
+      if (stepData.longitude) {
+        stepElement.dataset.longitude = stepData.longitude;
+      }
+      if (stepData.zoomLevel) {
+        stepElement.dataset.zoomLevel = stepData.zoomLevel;
+      }
 
-    stepElement.innerHTML = `<p class="step-content">${stepData.text}</p>`;
-    storySteps.appendChild(stepElement);
+      stepElement.innerHTML = `<p class="step-content">${stepData.text}</p>`;
+      storySteps.appendChild(stepElement);
+      isPrevStepScrolly = true;
+    }
     stepNumber++;
   });
 
-  scrollyContainer.appendChild(storySteps);
-  scrollyContainer.appendChild(createStickyContainers(scrollContainerCount));
-  contentSection.replaceChildren(scrollyContainer);
-
-  // re-query the steps after creating them from data
-  steps = scrollyContainer.querySelectorAll(".step");
+  if (isPrevStepScrolly) {
+    closeScrollyContainer(scrollyContainer, storySteps);
+  }
 }
 
-function createScrollyContainer(scrollyContainerCount) {
+function createTextContainer(stepData, stepNum) {
+  let textContainer = document.createElement("div");
+  textContainer.classList.add("text-content");
+  textContainer.dataset.step = stepNum;
+  textContainer.innerHTML = stepData.text;
+  return textContainer;
+}
+
+function createScrollyContainer() {
   let scrollyContainer = document.createElement("div");
   scrollyContainer.classList.add("scrolly-container");
-  scrollyContainer.dataset.stickyContainerId =
-    "sticky-container-" + scrollyContainerCount;
   return scrollyContainer;
 }
 
-function createStickyContainers(scrollyContainerCount) {
+function createStickyContainers(uniqueId) {
   let stickyContainer = document.createElement("div");
-  stickyContainer.id = "sticky-container-" + scrollyContainerCount;
   stickyContainer.classList.add("sticky-content");
+  stickyContainer.classList.add("sticky-container");
 
   let imageContainer = document.createElement("div");
-  //imageContainer.classList.add("sticky-content");
-  imageContainer.id = "sticky-image-container";
-  imageContainer.innerHTML = `<img id="the-sticky-image" />`;
+  imageContainer.classList.add("sticky-image-container");
+  imageContainer.innerHTML = `<img>`;
 
   let mapContainer = document.createElement("div");
-  //mapContainer.classList.add("sticky-content");
-  mapContainer.id = "sticky-map-container";
+  mapContainer.classList.add("sticky-map-container");
+  mapContainer.id = "sticky-map-container-" + uniqueId;
 
   let videoContainer = document.createElement("div");
-  //videoContainer.classList.add("sticky-content");
-  videoContainer.id = "sticky-video-container";
+  videoContainer.classList.add("sticky-video-container");
 
   stickyContainer.appendChild(imageContainer);
   stickyContainer.appendChild(mapContainer);
   stickyContainer.appendChild(videoContainer);
 
   return stickyContainer;
+}
+
+function closeScrollyContainer(scrollyContainer, storySteps) {
+  scrollyContainer.appendChild(storySteps);
+
+  // sticky containers need a unique id, so just grab the first step
+  // number, which will be unique to all the scrolly content
+  const uniqStickyId = getScrollyConatainerFirstStepNum(scrollyContainer);
+  const stickyContainer = createStickyContainers(uniqStickyId);
+  scrollyContainer.appendChild(stickyContainer);
+
+  contentSection.appendChild(scrollyContainer);
+}
+
+function getScrollyConatainerFirstStepNum(scrollyContainer) {
+  return scrollyContainer.querySelector(".step").dataset.step;
 }
 
 function displayThenThrowError(stepError) {
@@ -187,28 +216,28 @@ function displayThenThrowError(stepError) {
 
 // scrollama event handlers
 function handleStepEnter(response) {
-  var el = response.element;
+  var stepElement = response.element;
 
+  steps = document.querySelectorAll(".step");
   // Set active step state to is-active and all othe steps not active
   steps.forEach((step) => step.classList.remove("is-active"));
-  el.classList.add("is-active");
-  console.log("Step " + el.dataset.step + " entered");
+  stepElement.classList.add("is-active");
+  console.log("Step " + stepElement.dataset.step + " entered");
 
-  replaceStepStickyContent(el.dataset);
+  replaceStepStickyContent(stepElement);
 }
 
 /* As we enter a step in the story, replace or modify the sticky content
    in HTML based on the step data
 */
-function replaceStepStickyContent(stepData) {
-  stickyImageContainer = document.querySelector("#sticky-image-container");
-  stickyMapContainer = document.querySelector("#sticky-map-container");
-  stickyVideoContainer = document.querySelector("#sticky-video-container");
-  // activate the right container if it's different from previous step
-  if (
-    prevStepData == null ||
-    prevStepData.contentType != stepData.contentType
-  ) {
+function replaceStepStickyContent(stepElement) {
+  let stepData = stepElement.dataset;
+
+  // ensure we have the sticky containers associated with the current step
+  setCurrentStickyContainers(stepElement);
+
+  // transition to a new container if it's different from previous step
+  if (doesRequireStickyTransition(stepData)) {
     transitionToNewStickyContentContainer(stepData.contentType);
   }
 
@@ -218,10 +247,43 @@ function replaceStepStickyContent(stepData) {
   } else if (stepData.contentType === "video") {
     displayStickyVideo(stepData);
   } else if (stepData.contentType === "map") {
-    displayStickyMap(stepData.latitude, stepData.longitude, stepData.zoomLevel);
-    addAltTextToMap(stepData.altText);
+    displayStickyMap(
+      stickyMapContainer.id,
+      stepData.latitude,
+      stepData.longitude,
+      stepData.zoomLevel
+    );
+    addAltTextToMap(stickyMapContainer, stepData.altText);
   }
   prevStepData = stepData;
+}
+
+function doesRequireStickyTransition(stepData) {
+  // Transition to a new sticky container if the content type is different
+  // or if the step number is not sequential
+  return (
+    prevStepData == null ||
+    prevStepData.contentType != stepData.contentType ||
+    parseInt(prevStepData.step) + 1 !== parseInt(stepData.step)
+  );
+}
+
+function setCurrentStickyContainers(stepElement) {
+  // Since there are multiple scrolly containers, find the sticky container
+  // that is associated with the current scrolly container
+
+  // Find the scrolly container of the currrent step
+  const scrollyContainer = stepElement.closest(".scrolly-container");
+  const stickyContainer = scrollyContainer.querySelector(".sticky-container");
+
+  // search for each of the corrsponding sticky containers within this scrolly container
+  stickyImageContainer = stickyContainer.querySelector(
+    ".sticky-image-container"
+  );
+  stickyMapContainer = stickyContainer.querySelector(".sticky-map-container");
+  stickyVideoContainer = stickyContainer.querySelector(
+    ".sticky-video-container"
+  );
 }
 
 function transitionToNewStickyContentContainer(activateContentType) {
@@ -260,7 +322,7 @@ function transitionToNewStickyContentContainer(activateContentType) {
 }
 
 function displayStickyImage(stepData) {
-  const img = document.getElementById("the-sticky-image");
+  let img = stickyImageContainer.querySelector("img");
 
   // only replace sticky image if it has changed, to avoid flickering
   if (
@@ -280,8 +342,6 @@ function displayStickyImage(stepData) {
       img.alt = stepData.altText;
       img.style.opacity = 1;
     }, transitionInMilliseconds);
-
-    prevStepData = stepData.filePath;
   }
   if (stepData.zoomLevel) {
     img.style.transform = `scale(${stepData.zoomLevel})`;
@@ -313,9 +373,8 @@ function stopPlayingVideo() {
   }
 }
 
-function addAltTextToMap(altText) {
-  const map = document.getElementById("sticky-map-container");
-  map.setAttribute("aria-label", altText);
+function addAltTextToMap(mapElement, altText) {
+  mapElement.setAttribute("aria-label", altText);
 }
 
 function initScrollama() {
