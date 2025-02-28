@@ -46,7 +46,14 @@ export class StoryData {
 }
 
 export function isNumber(value) {
-  return isNaN(value);
+  // Check for empty strings or whitespace
+  if (typeof value === "string" && value.trim() === "") {
+    return false;
+  }
+
+  // Convert to number and check if it's valid
+  const num = Number(value);
+  return !isNaN(num) && Number.isFinite(num);
 }
 
 export function doesValueExist(value) {
@@ -86,7 +93,10 @@ export class StepData {
       );
     }
 
-    if (!this.altText || this.altText.length === 0) {
+    if (
+      this.contentType !== "text" &&
+      (!this.altText || this.altText.length === 0)
+    ) {
       throw new ScrollyError(
         actionTextIfError,
         `AltText is a required field`,
@@ -96,24 +106,30 @@ export class StepData {
 
     if (
       this.contentType === "map" &&
-      (this.latitude < -90.0 || this.latitude > 90.0)
+      (!isNumber(this.latitude) ||
+        this.latitude < -90.0 ||
+        this.latitude > 90.0)
     ) {
       throw new ScrollyError(
         actionTextIfError,
+        `Latitude of ${this.latitude} is invalid`,
         'Latitude must be between -90.0 and 90.0 for content type "map"'
       );
     }
     if (
       this.contentType === "map" &&
-      (this.longitude < -180.0 || this.longitude > 180.0)
+      (!isNumber(this.longitude) ||
+        this.longitude < -180.0 ||
+        this.longitude > 180.0)
     ) {
       throw new ScrollyError(
         actionTextIfError,
+        `Longitude of ${this.longitude} is invalid`,
         'Longitude must be between -180.0 and 180.0 for content type "map"'
       );
     }
 
-    if (this.zoomLevel != null && isNaN(Number(this.zoomLevel))) {
+    if (doesValueExist(this.zoomLevel) && !isNumber(this.zoomLevel)) {
       throw new ScrollyError(
         actionTextIfError,
         `ZoomLevel of ${this.zoomLevel} is invalid`,

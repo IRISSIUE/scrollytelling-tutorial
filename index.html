@@ -45,6 +45,18 @@
         <p id="subtitle"></p>
       </section>
 
+      <!-- The error dialog is only displayed when there is an error-->
+      <section id="error-container">
+        <div id="error-dialog">
+          <p id="error-header">Dang.</p>
+          <p id="error-message"></p>
+          <p id="error-action-container">
+            Error happened while: <span id="error-action"></span>
+          </p>
+          <p id="error-hint"></p>
+        </div>
+      </section>
+
       <!-- The 'content-section' is just here for reference/example, as it will be entirely replaced 
           by JavaScript generated code containing the content from a data source.
 
@@ -95,18 +107,6 @@
           </div>
         </div>
       </section>
-
-      <!-- The error dialog is only displayed when there is an error-->
-      <div id="error-container">
-        <div id="error-dialog">
-          <p id="error-header">Dang.</p>
-          <p id="error-message"></p>
-          <p id="error-action-container">
-            Error happened while: <span id="error-action"></span>
-          </p>
-          <p id="error-hint"></p>
-        </div>
-      </div>
 
       <section id="outro">
         <p id="end-text"></p>
