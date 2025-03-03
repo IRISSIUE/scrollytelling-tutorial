@@ -68,7 +68,7 @@ function doesRequireStickyTransition(stepData) {
   return (
     _prevStepData == null ||
     _prevStepData.contentType != stepData.contentType ||
-    parseInt(_prevStepData.step) + 1 !== parseInt(stepData.step)
+    Math.abs(parseInt(_prevStepData.step) - parseInt(stepData.step)) > 1
   );
 }
 

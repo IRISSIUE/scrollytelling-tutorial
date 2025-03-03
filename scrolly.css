@@ -15,7 +15,7 @@
 }
 
 /* CSS properties common to all sticky content */
-.sticky-content {
+.sticky-container {
   position: -webkit-sticky;
   position: sticky;
   z-index: 0;
@@ -35,8 +35,8 @@
   justify-content: center;
   overflow: hidden;
   display: none; /* hide by default, let meta data decide when to display */
-  height: 100%; /* fill space provided by sticky-content parent */
-  width: 100%; /* fill space provided by sticky-content parent */
+  height: 100%; /* fill space provided by sticky-container parent */
+  width: 100%; /* fill space provided by sticky-container parent */
 }
 
 .sticky-image-container img {
@@ -50,8 +50,8 @@
 .sticky-map-container {
   display: none; /* hide by default, let meta data decide when to display */
   z-index: 1; /* Ensure map displays above other content */
-  height: 100%; /* fill space provided by sticky-content parent */
-  width: 100%; /* fill space provided by sticky-content parent */
+  height: 100%; /* fill space provided by sticky-container parent */
+  width: 100%; /* fill space provided by sticky-container parent */
 }
 
 .sticky-video-container {
@@ -65,18 +65,18 @@
   height: 100%;
 }
 
-.sticky-content img {
+.sticky-container img {
   /* eases transition when zoomming an image */
   transition: transform 1s linear, opacity 0.5s linear;
 }
 
-.sticky-content video,
+.sticky-container video,
 map {
   /* eases transition when zoomming an image or video */
   transition: opacity 0.5s linear;
 }
 
-article {
+.steps-container {
   position: relative;
   width: 25%;
   padding: 0 0rem;

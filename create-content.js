@@ -1,6 +1,5 @@
 import { fetchAllDataFromGoogleSheet } from "./google-sheet.js";
 import { validateStepDataArray } from "./common.js";
-import { ScrollyError } from "./common.js";
 import { displayThenThrowError } from "./common.js";
 
 export async function createAllStoryScrollyContentInHTML() {
@@ -46,14 +45,18 @@ function createStoryContentInHtml(storyData) {
 
 function setHorizontalWidthOfTextAndStickyContent(horizontalPercentage) {
   if (horizontalPercentage < 99 && horizontalPercentage > 1) {
-    // Width is specified as a percentage of the horizontal spacce for the text
-    const article = document.querySelector("article");
-    article.style.width = `${horizontalPercentage}%`;
+    // There can be multiple steps containers, so set width for each
+
+    // Width is specified as a percentage of the horizontal space for the text
+    const stepsContainers = document.querySelectorAll(".steps-container");
+    stepsContainers.forEach((stepsContentDiv) => {
+      stepsContentDiv.style.width = `${horizontalPercentage}%`;
+    });
 
     // Sticky content is the remaining horizontal space, but we have to account
     // for each kind of sticky content
-    const stickyContent = document.querySelectorAll(".sticky-content");
-    stickyContent.forEach((stickyContentDiv) => {
+    const stickyContainers = document.querySelectorAll(".sticky-container");
+    stickyContainers.forEach((stickyContentDiv) => {
       stickyContentDiv.style.width = `${100 - horizontalPercentage}%`;
     });
   }
@@ -68,7 +71,8 @@ function createStepsContentInHtml(stepDataArray) {
   let contentSection = document.querySelector("#content-section");
 
   let scrollyContainer = createScrollyContainer();
-  let storySteps = document.createElement("article");
+  let storySteps = document.createElement("div");
+  storySteps.classList.add("steps-container");
 
   contentSection.innerHTML = "";
 
@@ -88,7 +92,8 @@ function createStepsContentInHtml(stepDataArray) {
 
       // start a new scrolly container for subsequent steps
       scrollyContainer = createScrollyContainer();
-      storySteps = document.createElement("article");
+      storySteps = document.createElement("div");
+      storySteps.classList.add("steps-container");
       isPrevStepScrolly = false;
     } else {
       // Create next step in the scrolly story
@@ -147,7 +152,6 @@ function createStepElement(stepData, stepNumber) {
 
 function createStickyContainers(uniqueId) {
   let stickyContainer = document.createElement("div");
-  stickyContainer.classList.add("sticky-content");
   stickyContainer.classList.add("sticky-container");
 
   let imageContainer = document.createElement("div");
