@@ -158,3 +158,27 @@ export class ScrollyError extends Error {
     this.hint = Hint;
   }
 }
+
+export function displayThenThrowError(stepError) {
+  const errorMessage = document.getElementById("error-message");
+  errorMessage.innerHTML = stepError.message;
+
+  const errorAction = document.getElementById("error-action");
+  errorAction.innerHTML = stepError.action;
+
+  const errorHint = document.getElementById("error-hint");
+  if (stepError.hint) {
+    errorHint.innerHTML = stepError.hint;
+    errorHint.style.display = "block";
+  } else {
+    errorHint.style.display = "none";
+  }
+
+  const errorContainer = document.getElementById("error-container");
+  errorContainer.style.display = "flex"; // Show the error container
+
+  // Since stepError a subclass of Error, we want to throw it after
+  // we display the error in HTML so that the full stack trace is available
+  // to the user in the console
+  throw stepError;
+}
