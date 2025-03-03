@@ -112,3 +112,13 @@ article {
   padding: 1rem;
   font-size: clamp(10px, 3.5vw, 24px);
 }
+
+.text-content {
+  width: 75%;
+  margin: 5rem auto 5rem auto;
+}
+
+.text-content * {
+  text-align: left;
+  margin-bottom: 1rem;
+}
