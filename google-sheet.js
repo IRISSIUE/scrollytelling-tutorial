@@ -114,7 +114,7 @@ function convertGoogleSheetDataToStoryData(values) {
     subtitle,
     endText,
     textHorizontalPercentage,
-    author,
+    authors,
     footer,
   ] = values[1];
 
@@ -124,7 +124,7 @@ function convertGoogleSheetDataToStoryData(values) {
     subtitle,
     endText,
     textHorizontalPercentage,
-    author,
+    authors,
     footer
   );
 }
