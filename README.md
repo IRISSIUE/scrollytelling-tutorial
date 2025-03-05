@@ -1,144 +1,128 @@
-# Scrolly Story Generator
+# Scrolly Story Generator: Student Tutorial
 
-This project allows you to create a scrollytelling story using data from a spreadsheet.
+- What is scrollytelling?
+- Making a scrollytelling story
+   - Storyboard
+   - Google Sheet
+   - Add steps
+      - Maps
+      - Images
+      - Videos
+   - Adding text
+   - Finalizing your story
+- Errors
 
-A scrollytelling story is a web page that scrolls text down a web page while other content (such as images, maps, or videos), remain "sticky" and stays in the same position on the page. The sticky content changes as the user scrolls, to illustrate the current step in the story being told.
+## What is scrollytelling?
 
-This project contains a sample [Scrolly Story](https://irissiue.github.io/scrolly-story-generator/) that you can use as a starting point to create your own.
+Scrollytelling is a form of interactive storytelling that pairs text with media. As you scroll through the narrative, the media automatically transforms. Media might include video, images, and clickable maps.  
 
-# How to Create Your Own Scrolly Story
+These can be really complex! Here are some fancy examples of scrollytelling that highlight how interactive scrolling can engage the reader. 
 
-Scrolly Stories can be created either from a [Google Sheet](https://docs.google.com/spreadsheets/d/17sHlHcOilG9UmRju8YDGx4bRMIDpQ5Bpfzc0QI-Np6c) linked to your project, or a CSV file of the same format that is uploaded into your GitHub repository. It will be easier to develop your story if you start from a Google Sheet, because you can edit the google sheet and then refresh the story and you'll see your changes right away. To see changes from a CSV file, you'll need to update your git repository with the CSV file before you can see your changes. It is recommended that you develop your story from a Google Sheet, and when it is ready, upload a CSV file for the final version so that all your data is in a single place (the GitHub repository).
+- [Every Last Drop](http://everylastdrop.co.uk/)
+- [One Pixel Moon](http://everylastdrop.co.uk/)
+- [Detroit Segregation Wall](http://everylastdrop.co.uk/)
 
-## Overview
+But they don’t have to be complicated to be effective. The key to good scrollytelling is to think about how your text and media enhance one another. The media isn’t just illustrating the text – it’s adding meaning that the text can’t convey effectively or completely on its own.
 
-The main steps
+## Making a scrollytelling story
 
-1. Copy this template GitHub repository to your own account
-2. Setup a GitHub Page for your repository to host your story
-3. Copy the example Google Sheet to your Google Drive
-4. Link your Google Sheet to your repository
-5. Develop your story by editing the Google Sheet
-6. Upload any images, videos, or audio you use in the story into your GitHub repository
-7. After you've created your story and want to share it widely, you'll need to do one of the following (explained below):
-   - Convert your Google Sheet to a CSV file and upload to your repository (recommended)
-   - To continue using Google Sheets, generate your own API key, or
+We’re using the [Scrolly Story Generator](https://github.com/IRISSIUE/scrolly-story-generator), developed by Dan Schreiber for the [IRIS Center](https://iris.siue.edu/). You’ll add content to your scrolly story using a [Google Sheet](https://docs.google.com/spreadsheets/d/17sHlHcOilG9UmRju8YDGx4bRMIDpQ5Bpfzc0QI-Np6c/edit?usp=sharing). Your story will be broken into **steps**, and each step will include some text and a single piece of media. (Want to know more about setting up the scrolly story? Check out the main [Scrolly Story Generator GitHub page](https://github.com/IRISSIUE/scrolly-story-generator), where the code and documentation are stored.)
 
-### Detailed Steps
+As you follow along, you can look at the links for the [example spreadsheet](https://docs.google.com/spreadsheets/d/12k_5yQZBMUCSNZyLDzhBBtV2A6Rp0V5PsVVWu2iUvDc/edit?usp=sharing) and the [example scrolly story](https://irissiue.github.io/scrollytelling-tutorial).
 
-#### Copy GitHub Repository
+### 1. Storyboard
 
-1. Sign into GitHub using your account credentials
-2. Open [this GitHub repository](https://github.com/irissiue/scrolly-story-generator) in a new tab
-3. In the upper right corner, click _Use this template_ the "Create a new repository"
-4. Create a repository name and description specific to your story and press the green _Create Repository_ button at the bottom right
+Before you even start adding to the sheet, take some time to storyboard. What are the key pieces of media you want to highlight? Where does it make sense to break up your text? There's some flexibility built into the tool (which we'll talk about below), but a good rule is to try to keep your text under 100 words per step. (Less is fine!) This is a good opportunity to gather all your references in one place too.
 
-Your new repository will have a URL like `https://github.com/YOUR_GITHUB_NAME/YOUR_REPOSITORY_NAME`
+Remember that your media items should be things you have permission to use: public domain, Creative Commons, or your own work. Check out this [list of resources for free-to-use media](https://iris.siue.edu/public-domain-and-open-access-media/).
 
-#### Create a GitHub Pages website to host your story
+### 2. Find your Google Sheet
 
-GitHub Pages is a free service that allows you to publish a website directly from a GitHub repository. Your scrollytelling story will be published and accessible on this site.
+Once you've got a good outline, head over to your Google Sheet. If you're doing this in class, your instructor may have created a Google Sheet for you. If not, you can copy [the template](https://docs.google.com/spreadsheets/d/17sHlHcOilG9UmRju8YDGx4bRMIDpQ5Bpfzc0QI-Np6c/edit?usp=sharing). You can follow along with this [example spreadsheet](https://docs.google.com/spreadsheets/d/12k_5yQZBMUCSNZyLDzhBBtV2A6Rp0V5PsVVWu2iUvDc/edit?usp=sharing) and the [example scrolly story](https://irissiue.github.io/scrollytelling-tutorial).
 
-1. In your new repository, click on the _Settings_ tab/button beneath the search bar
-2. Click on the _Pages_ link under "Code and Automation" on the left sidebar
-3. Under "Build and Deployment" change _Source_ from _None_ to _Main_, and keep the default / (root) setting, then press _Save_
-4. This will publish your site, but it will take a few minutes to complete. Get a cup of coffee, then come back, refresh the browser, and the website URL of your story is displayed at the top of the page. It will be of the form `https://YOUR_GITHUB_NAME.github.io/YOUR_REPOSITORY_NAME/`
-5. Go to your new website and verify it matches the example provided by this repository
+In the sheet, you'll find two tabs: Story and Steps. Click over to Steps. (We'll come back to Story later.)
 
-#### Copy the example Google Sheet
+<img src="https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-1.jpg" alt="A screenshot of a Google Sheets template for the Scrolly Story Generator, displaying the Story tab" width="500"/>
 
-1. Open the [template Google Sheet](https://docs.google.com/spreadsheets/d/17sHlHcOilG9UmRju8YDGx4bRMIDpQ5Bpfzc0QI-Np6c) in a new tab
-2. Sign into your Google account and select _File -> Make a Copy_ to save a version of the template to your Google Drive
-3. Click the blue _Share_ button and then _Change to anyone with the link_, then _Done_.
-4. Go to _File -> Publish to the Web_ , then the green _Publish_ button. Publicly sharing the link is needed for the app to read the spreadsheet. You can close this dialog via the upper right _X_ symbol.
+### 3. Add steps
 
-#### Link your Google Sheet to your repository
+Each row in the spreadsheet is one **step**, and each step is a combination of one block of text and one piece of media. There are three types of step you can choose from, depending on your media type: **map**, **image**, and **video**, which all pair a text box with a media box, and **text**, which is just text that stretches across the whole page. Select your media in the ContentType column (Column A). For the next few columns, there are some small differences in the information you need depending on step type.
 
-You need your repository to read your version of the Google Sheet, so that changes you make in your Google Sheet are displayed in your story.
+<img src="https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-4.jpg" alt="A screenshot of a Google Sheets template for the Scrolly Story Generator, displaying the Steps tab" width="500"/>
 
-1. At the top of your browser, copy your Google Sheet URL address (it will end in _/edit#gid=0_). Don't copy the URL from the _Published to the web_ address, which will not work with this project.
-2. In your GitHub Repository, find the file `google-sheet.js` in the list of files for the project.
-3. Click on `google-sheet.js` and it will show the contents of the file.
-4. Click the pencil icon in the top right of the file contents and choose _Edit in place_.
-5. In the line under `const googleSheetURL = `, replace the URL between the single quotes with your Google Sheet URL. Be sure not to remove the single quotes or the semicolon at the end.
-6. Press the green _Commit Changes_ button at the top right
+#### For maps:
 
-Now you can begin editing your Google Sheet to create your story. After you make an edit, refresh the browser on Pages URL and your changes should appear in your story
+- Skip Column B, the FilePath column.
+- In Column C, the AltText column, describe what's visible on your map and what purpose it's serving in your narrative. 
+- In Columns D and E, Latitude and Longitude, add the coordinates for the center of your map. The easiest way to get your coordinates is to go to your location in Google Maps and right click/command+click on it. The coordinates will be at the top of the menu that appears. Click on them to copy them. Make sure that you separate the coordinates into the two columns and delete the comma between them -- latitude is the first number, and longitude is the second number.
+[A screenshot of Google Maps, displaying the menu that pops up when you right click on the location, with coordinates at the top](https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-9.jpg)
+- In Column F, ZoomLevel, choose how far in you want to zoom on the map. Zoom levels range from 0 to 18, and the higher the number, the more zoomed in you’ll be. For maps, a zoom level of 4 or 5 will show a whole region of the country. A zoom level of 13 or 14 will show detail at the level of streets and buildings. You can set the zoom level for each step, so think carefully about what you’re trying to demonstrate and where you want your reader’s attention! At the bottom of this page, there’s a map where you can zoom in to the frame you want and see what the zoom level is.​
 
-# Editing the Google Sheet to Create Your Story
+#### For images
 
-The spreadsheet contains all the data that you'll use to create your scrollytelly story. Updating the data in the Google Sheet will automatically update your Pages site (after you've set it up, above).
+- To use images, you'll need to link to them from somewhere. If you have access to the GitHub repository for your story, you can upload it there. That ensures that you have a stable link that won't break. Otherwise, check with your instructor for the best place to upload it.
+- In Column B, FilePath, paste the File URL for your image.
+- In Column C, AltText, describe your image and what purpose it's serving in your narrative.
+- Skip Columns D and E, Latitude and Longitude.
+- In Column F, ZoomLevel, choose how far in you want to zoom on the image. Images don't need as high a zoom level as maps, and your image will get grainy if you zoom in too far. Choose a zoom level of 1 if you just want it to display as is. 
+- The built-in zoom goes toward the center of the image. If you want to zoom in on a different area or pan between sections of the image, your best bet is to crop the image yourself and add the different areas of the image in as individual steps. 
+- Your images will take up a big chunk of the screen, so make sure you've got a relatively high-resolution image -- ideally not less than 1200 px in either direction. Not sure how big your image is? If you've got it saved to your computer, right click and select Properties and go to the Details tab.
 
-The data available to you is broken down into separate tabs of the spreadsheet
+#### For videos
 
-## Story Tab
+- You can upload videos to your eportfolio, but in some cases the file sizes might get too big. You can also use links from YouTube or Vimeo. If you do, you'll need to copy the link out of the embed code. Click on Share > Embed, and then copy the URL in the code.
+[A screenshot of the interface for accessing the embed code in Youtube, with the URL portion of the embed code highlighted](https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-2.jpg)
+- In Column B, FilePath, paste the URL for your video.
+- In Column C, AltText, describe your video and what purpose it's serving in your narrative.
+- Skip Columns D, E, and F, Latitude, Longitude, and ZoomLevel.
 
-This contains all the data you can change about the story as a whole. It is a single line of content (below the header line), and includes the following:
+### Adding text
 
-- **ScrollType** -- The type of ScrollyStory
-  - left-side - the scroll text is displayed on the left and the sticky images are on the right
-  - center-overlap (Not yet available) - the text scroll ups the center on top of the sticky content, which fills the full width of the screen.
-- **Title** - the title of the page, displayed as Header (H1) at the top of the page
-- **Subtitle** - an optional subtitle, displayed below the title
-- **EndText** - text that can go at the end of page, after the scrolly content has ended, if you to wrap up the story.
+Column G, Text, is the same for all media types. This is where you'll add your narrative content to your story. You have two options here:
 
-## Steps Tab
+- You can add text to an existing piece of content, in which case the text will appear to the left of the media. If you go this route, try to keep your text under about 100 words per step.
+- You can add text as a standalone box with no media, in which case your text will stretch across the whole width of the page. To do this, select "Text" as your content type and leave columns B through F blank. You can have longer chunks of text in this format. (This is a good way to include your references!)
 
-This contains the data for each step in the story. Each block of text that scrolls up the page is considered a "step".
+In both cases, you can format your text using HTML. Here are a few essentials.
 
-Each row in this tab is one step, displayed in the order it appears in the tab.
+| [A screenshot of a cell in the Google Sheet showing the HTML-formatted text](https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-5.jpg) | [A screenshot of the corresponding text box in the live scrolly story, with the formatting implemented](https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-6.jpg) |
 
-Values are:
+- Since you’re entering your text into a spreadsheet, you won’t be able to use the Enter key to separate your paragraphs. But no one wants to read a wall of text! In order to break your text, use two linebreak tags between your paragraphs: \<br>\<br> ​
+- You might want to format your text. Some handy formatting tags include \<b>bold\</b>, \<i>italics\</i>, and \<u>underline\</u>.​
+- You can also include links in your text: \<a href=“www.example-url.com”>The text you want to show up on the page goes here\</a>​. This is one way to add references as you go!
+- If you want to do more with HTML, check out this list of basic tags.
+- You can use this [HTML editor](https://wysiwyghtml.com/) to format your text and generate the correct HTML. Format your content using the editor on the left side, and you'll see your HTML appear on the right side. Before you copy it over, press the "Compress HTML" button at the bottom of the HTML window.
 
-- **ContentType** - The kind of sticky content displayed to the right
-  - Image
-  - Map
-  - Video
-- **FilePath** - The path to the image, video, or audio file being used in the step, either relative to the GitHub project, or a URL to external media. Note that for videos from services like youtube or vimeo, you have to use the URL from the embed code, not the brower's URL.
-  - Example: ./media/my-image.jpg
-  - Example: http://www.siue.edu/some_image.jpeg
-  - Example: https://www.youtube.com/embed/zp488Cfivm4?si=OCq0xL0Fd9s96irZ
-  - Example: https://player.vimeo.com/video/851328188
-  - Example: ./media/my-video.mp4
-- **AltText** - Alternate text to help those vision loss to understand what is being displayed for this step
-  - Example: Map of Edwardsville, Illinois
-  - Example: President Abraham Lincoln (for an image of Lincoln, where his being president is relevant to the text)
-- **Latitude** - Used for Map content, to specify the Latitude of the center of the map
-  - A floating point number between -90.0 and 90.0
-- **Longitude** - Used for Map content, to specify the Longitue of the center of the map
-  - A floating point number between -180.0 and 180.0
-- **ZoomLevel** - Zoom levels allow you to change the size of what's viewable in the window, which functionally works as the ability to zoom in or out of a map or image.
-  - Maps have valid ZoomLevels between 0 (the whole world) and 18 (max zoom)
-  - Image ZoomLevels
-    - the default 1, so specifying 1 doesn't change the zoom
-    - Positive numbers scale the image up or down (zoom in or out)
-      - Numbers between 0 and 1 scale an image down, which zooms it out. A value of 0.5 makes the image half as big, and 0 will make the image disappear as it scales the image down to 0 size.
-      - Numbers above 1 scale the image up that many times. A value 1.5 will make the image twice ts original size, which zooms in.
-      - Negative numbers flip the element as well as scale it. A value of -1.5 will flip the image horizontally and zoom in by a factor of 1.5
-- **Text** - The text that scrolls up for this step
+[A screenshot of the HTML editor with the icon for "Compress HTML" in the lower right outlined in a red box](https://iris.siue.edu/wp-content/uploads/2025/02/Compress-HTML-button-This-removes-line-breaks-that-will-mess-up-your-spreadsheet.png)
 
-# Credits
+### 5. Finalize your story
 
-This project uses the following libraries and tools:
+Now that you've got the story content finished, it's time to add some finishing touches and edit your content. First, go to the Story tab in your spreadsheet. 
 
-- Scrollama: A library for creating scrollytelling experiences.
-  - Website: [Scrollama](https://github.com/russellsamora/scrollama)
-  - License: MIT
-- Intersection Observer: A polyfill for the Intersection Observer API.
+- Ignore Column A, ScrollType.
+- Fill out Columns B and C, Title and Subtitle. (You can also use subtitle as an author field and put your names.)
+- Column D, EndText, is what appears at the end of your scrolly story. 
+- Column E, TextHorizontalPercentage, lets you change how wide the text box is compared to the media box in your story. By default, it's set to 33%, or 1/3 of the width of your screen. If you've got a lot of text-heavy steps, you might want to increase that to give yourself a little more room. I recommend staying under 50%.
+- In Column F, Authors, put the author name(s).
 
-  - Website: [Intersection Observer](https://github.com/w3c/IntersectionObserver)
-  - License: W3C
+Finally, go to your story's link and read through it carefully. 
 
-- Leaflet: An open-source JavaScript library for interactive maps.
+- Proofread for any errors in your text.
+- Make sure all your sources are cited.
+- Take a close look at your media items: Are they displaying properly? Do they make sense? Are they high enough resolution?
 
-  - Website: [Leaflet](https://leafletjs.com/)
-  - License: BSD-2-Clause
+### 6. Errors
 
-- PapaParse: A powerful CSV parser for JavaScript.
+Sometimes things get a little messy in the spreadsheet, and that generates errors with the tool. Most of the time, the tool will tell you what the problem is. Here are a couple common messages you might see and how to address them.
 
-  - Website: [PapaParse](https://www.papaparse.com/)
-  - License: MIT
+- AltText: AltText is a required field, because it helps make your stories more accessible. Your story won't load if you don't have alt text for each media item.
+- Invalid contentType: Make sure your content type is one of the three drop-down options: map, image, or video.
 
-- DOMPurify: A DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML, and SVG.
-  - Website: [DOMPurify](https://github.com/cure53/DOMPurify)
-  - License: Apache-2.0
+[A screenshot of an error message that reads "Dang. AltText is a required field.](https://iris.siue.edu/wp-content/uploads/2025/02/Scrolly-tutorial-7.jpg)
+
+Occasionally, the story might load, but a specific piece of media might not. Here are a couple ways to troubleshoot media errors:
+
+- Maps: If your map box appears as an empty grey box, there's probably a problem with your coordinates. Make sure that you don't have a lingering comma in the latitude box.
+- Videos: If your video has a little sad face icon, you probably have the wrong link in there. Make sure to copy the link out of the embed code, not the one from the browser or from the initial Share window.
+
+[A screenshot of a scrolly story where the media is an empty greyed out box](https://iris.siue.edu/wp-content/uploads/2025/02/Scolly-tutorial-8.jpg)
