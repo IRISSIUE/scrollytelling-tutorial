@@ -82,11 +82,11 @@ In both cases, you can format your text using HTML. Here are a few essentials.
 
 - Since you’re entering your text into a spreadsheet, you won’t be able to use the Enter key to separate your paragraphs. But no one wants to read a wall of text! In order to break your text, use two linebreak tags between your paragraphs: \<br>\<br> ​
 - You might want to format your text. Some handy formatting tags include \<b>bold\</b>, \<i>italics\</i>, and \<u>underline\</u>.​
-- You can also include links in your text: \<a href=“www.example-url.com”>The text you want to show up on the page goes here\</a>​. This is one way to add references as you go!
+- You can also include links in your text: \<a href=“www.example-url.com”\>The text you want to show up on the page goes here\</a>​. This is one way to add references as you go!
 - If you want to do more with HTML, check out this list of basic tags.
 - You can use this [HTML editor](https://wysiwyghtml.com/) to format your text and generate the correct HTML. Format your content using the editor on the left side, and you'll see your HTML appear on the right side. Before you copy it over, press the "Compress HTML" button at the bottom of the HTML window.
 
-<img src="https://iris.siue.edu/wp-content/uploads/2025/02/Compress-HTML-button-This-removes-line-breaks-that-will-mess-up-your-spreadsheet.png" alt="A screenshot of the HTML editor with the icon for "Compress HTML" in the lower right outlined in a red box" width="300"/>
+<img src="https://iris.siue.edu/wp-content/uploads/2025/02/Compress-HTML-button-This-removes-line-breaks-that-will-mess-up-your-spreadsheet.png" alt="A screenshot of the HTML editor with the icon for 'Compress HTML' in the lower right outlined in a red box" width="500"/>
 
 ### 5. Finalize your story
 
