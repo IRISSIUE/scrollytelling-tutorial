@@ -74,7 +74,8 @@ export class StepData {
     latitude,
     longitude,
     zoomLevel,
-    text
+    text,
+    caption
   ) {
     this.contentType = DOMPurify.sanitize(contentType);
     this.filePath = DOMPurify.sanitize(filePath);
@@ -83,6 +84,7 @@ export class StepData {
     this.longitude = DOMPurify.sanitize(longitude);
     this.zoomLevel = DOMPurify.sanitize(zoomLevel);
     this.text = DOMPurify.sanitize(text);
+    this.caption = DOMPurify.sanitize(caption)
   }
 
   validate(actionTextIfError) {
